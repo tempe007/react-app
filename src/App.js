@@ -12,7 +12,7 @@ class App extends Component {
         super(props);
         this.max_content_id =3 ;
         this.state = {
-            mode : 'read',
+            mode : 'welcome',
             selected_content_id : 2,
             welcome : {title : 'welcome',desc:'welcomcomcomcome'},
             subject: {title: 'WEB', subs: 'world wide web'},
@@ -47,20 +47,37 @@ class App extends Component {
             _article = <CreateContent onSubmit={
                 (_title,_desc)=>{
                     this.max_content_id = this.max_content_id +1 ;
-                    let _content = this.state.contents.concat({id : this.max_content_id,title : _title , desc : _desc})
-
-                    this.setState({contents : _content});
+                    //let _content = this.state.contents.concat({id : this.max_content_id,title : _title , desc : _desc})
+                    let _content = Array.from(this.state.contents);
+                    _content.push({id : this.max_content_id,title : _title , desc : _desc})
+                    this.setState({
+                        contents : _content,
+                        mode :'read',
+                        selected_content_id : this.max_content_id
+                    });
                 }
             }></CreateContent>
+        }else if (this.state.mode === 'delete'){
+
         }
         else if (this.state.mode === 'update'){
             _contents = this.getReadContent();
-            _article = <UpdateContent onSubmit={
-                (_title,_desc)=>{
-                    this.max_content_id = this.max_content_id +1 ;
-                    let _content = this.state.contents.concat({id : this.max_content_id,title : _contents.title , desc : _contents.desc})
-
-                    this.setState({contents : _content});
+            _article = <UpdateContent data={_contents} onSubmit={
+                (_id,_title,_desc)=>{
+                    let  _cont = Array.from(this.state.contents);
+                    let i = 0 ;
+                    while (i < _cont.length){
+                        if(_cont[i].id === _id){
+                            _cont[i] = {id:_id,title:_title,desc:_desc};
+                            console.log(_cont[i]);
+                            break;
+                        }
+                        i = i+1;
+                    }
+                    this.setState({
+                        contents : _cont,
+                        mode :'read'
+                    });
                 }
             }></UpdateContent>
         }
@@ -90,9 +107,29 @@ class App extends Component {
                 }
                 data={this.state.contents}></MenuList>
             <Control onChangeMode={(mode) =>{
-                this.setState({
-                    mode : mode
-                })
+                if(mode === 'delete') {
+                    if(window.confirm("삭제하시겠습니까?")) {
+                        let _cont = Array.from(this.state.contents);
+                        let i = 0 ;
+                        while (i < _cont.length){
+                            if(_cont[i].id == this.state.selected_content_id) {
+                                _cont.splice(i,1);
+                                break;
+                            }
+                            i = i+1;
+                        }
+                        this.setState({
+                            contents : _cont,
+                            mode: 'welcome'
+                        });
+                        alert("삭제되었습니다.");
+                    }
+                }else {
+                    this.setState({
+                        mode : mode
+                    })
+                }
+
             }}></Control>
             {this.getContent()}
         </div>

@@ -22,7 +22,7 @@ class Control extends Component {
                     value={'delete'}
                     onClick={(e)=>{
                         e.preventDefault();
-                        this.props.onChangeMode('create');
+                        this.props.onChangeMode('delete');
                     }}
                 /></li>
             </ul>
