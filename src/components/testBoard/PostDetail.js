@@ -12,7 +12,7 @@ const PostDetail = ({ posts, onDelete }) => {
     console.log("postData",postData)
     //console.log("post data",post.id,post.title,post.content);
     const handleDelete = async () => {
-        await onDelete(Number(id));
+        await onDelete(id);
         navigate('/');
     };
 

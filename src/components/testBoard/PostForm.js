@@ -8,12 +8,14 @@ const PostForm = ({ posts, onSave }) =>{
     const { id } = useParams();
     const navigate = useNavigate();
 
+
     useEffect(() => {
         if (id) {
-            const post = posts.find(post => post.id === Number(id));
-            if (post) {
-                setTitle(post.title);
-                setContent(post.content);
+
+            const postData = posts.filter(post  => post.id === id);
+            if (postData) {
+                setTitle(postData[0].title);
+                setContent(postData[0].content);
             }
         }
     }, [id, posts]);
@@ -21,7 +23,7 @@ const PostForm = ({ posts, onSave }) =>{
         e.preventDefault();
         const newPost = { title, content };
         if (id) {
-            await onSave({ id: Number(id), ...newPost });
+            await onSave({ id: id, ...newPost });
             navigate(`/post/${id}`);
         } else {
             const result = await onSave(newPost);
