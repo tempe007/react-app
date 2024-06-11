@@ -29,6 +29,7 @@ let App = () =>{
     };
 
     const deletePost = async (id) => {
+        console.log("deletePost",deletePost);
         await axios.delete(`http://localhost:4000/posts/${id}`);
         setPosts(posts.filter(post => post.id !== id));
     };

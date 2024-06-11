@@ -7,7 +7,7 @@ const PostForm = ({ posts, onSave }) =>{
     const [content, setContent] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
-    console.log(id);
+
     useEffect(() => {
         if (id) {
             const post = posts.find(post => post.id === Number(id));
